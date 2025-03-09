@@ -20,8 +20,8 @@ start_date = st.sidebar.date_input("Start Date", min_date, min_value=min_date, m
 end_date = st.sidebar.date_input("End Date", max_date, min_value=min_date, max_value=max_date)
 
 # membuat filter slider harga berdasarkan payment_value
-min_price = float(df["payment_value"].min())
-max_price = float(df["payment_value"].max())
+min_price = int(df["payment_value"].min())
+max_price = int(df["payment_value"].max())
 
 price_range = st.sidebar.slider("Price Range", min_price, max_price, (min_price, max_price))
 
@@ -65,7 +65,7 @@ review_change = ((current_review - previous_review) / previous_review * 100) if 
 st.header("📈 E-Commerce Analysis Dashboard")
 
 # mwemberikan logo pada sidebar dan dashboard
-st.logo(image="Dashboard/coding_camp_logo.png")
+st.sidebar.image("Dashboard/coding_camp_logo.png", use_column_width=True)
 
 # membuat layout 3 columns untuk summary
 col1, col2, col3 = st.columns(3)
