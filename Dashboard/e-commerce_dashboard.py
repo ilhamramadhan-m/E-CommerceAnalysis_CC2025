@@ -9,7 +9,10 @@ df = pd.read_csv("Dashboard/e-commerce_dataset.csv", parse_dates=["order_purchas
 # Set page config
 st.set_page_config(page_title="E-Commerce Analysis Dashboard", layout="wide")
 
-# membuat sidebar
+# mwemberikan logo pada sidebar dan dashboard
+st.sidebar.image("Dashboard/coding_camp_logo.png", use_column_width=True)
+
+# membuat header pada sidebar
 st.sidebar.header("🔍 Filter")
 
 # membuat filter start date dan end date order
@@ -63,9 +66,6 @@ review_change = ((current_review - previous_review) / previous_review * 100) if 
 
 # memberikan title untuk dashboard
 st.header("📈 E-Commerce Analysis Dashboard")
-
-# mwemberikan logo pada sidebar dan dashboard
-st.sidebar.image("Dashboard/coding_camp_logo.png", use_column_width=True)
 
 # membuat layout 3 columns untuk summary
 col1, col2, col3 = st.columns(3)
