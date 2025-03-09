@@ -65,7 +65,7 @@ review_change = ((current_review - previous_review) / previous_review * 100) if 
 st.header("📈 E-Commerce Analysis Dashboard")
 
 # mwemberikan logo pada sidebar dan dashboard
-st.logo(image="coding_camp_logo.png")
+st.logo(image="Dashboard/coding_camp_logo.png")
 
 # membuat layout 3 columns untuk summary
 col1, col2, col3 = st.columns(3)
