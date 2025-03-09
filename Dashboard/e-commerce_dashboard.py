@@ -9,8 +9,8 @@ df = pd.read_csv("Dashboard/e-commerce_dataset.csv", parse_dates=["order_purchas
 # Set page config
 st.set_page_config(page_title="E-Commerce Analysis Dashboard", layout="wide")
 
-# mwemberikan logo pada sidebar dan dashboard
-st.sidebar.logo("Dashboard/coding_camp_logo.png", use_column_width=True)
+# memberikan logo pada sidebar dan dashboard
+st.sidebar.image("Dashboard/coding_camp_logo.png", use_column_width=True)
 
 # membuat header pada sidebar
 st.sidebar.header("🔍 Filter")
