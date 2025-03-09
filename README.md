@@ -32,18 +32,25 @@ ProjectDataAnalysis-DBS/
 ```
 python --version
 ```
-- Clone Repository
+- Clone Repository and navigate to the project directory
 ```
-https://github.com/ilhamramadhan-m/ProjectDataAnalysis-DBS
+git clone https://github.com/ilhamramadhan-m/ProjectDataAnalysis-DBS
+cd ProjectDataAnalysis-DBS/Dashboard
 ```
 - Install Libraries
 ```
 pip install -r requirements.txt
 ```
+
 ### 2️⃣ Data Wrangling
-
+- **Gathering Data**: Importing an e-commerce dataset consisting of several tables such as customers, orders, payments, and products.
+- **Assessing Data**: Checking data types, missing values, and inconsistencies in the dataset.
+- **Data Cleaning**: Removes duplicate data, handles missing values, and adjusts data formats (such as date conversion).
 ### 3️⃣ Exploratory Data Analysis (EDA)
-
+Analyze the data in each table and visualize it to gain insight and evaluate it.
 ### 4️⃣ Data Integration
-
-### 5️⃣ Dashboard Development
+Merge multiple tables to get the main dataset.
+### 5️⃣ Dashboard with Streamlit
+```
+streamlit run Dashboard/e-commerce_dashboard.py
+```
