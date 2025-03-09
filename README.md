@@ -26,4 +26,24 @@ ProjectDataAnalysis-DBS/
 ```
 
 ## 🛠 Steps
+### 1️⃣ Setup Environment
+- Install Python (If not already exist)
+- Check the Python version to make sure it is installed
+```
+python --version
+```
+- Clone Repository
+```
+https://github.com/ilhamramadhan-m/ProjectDataAnalysis-DBS
+```
+- Install Libraries
+```
+pip install -r requirements.txt
+```
+### 2️⃣ Data Wrangling
 
+### 3️⃣ Exploratory Data Analysis (EDA)
+
+### 4️⃣ Data Integration
+
+### 5️⃣ Dashboard Development
