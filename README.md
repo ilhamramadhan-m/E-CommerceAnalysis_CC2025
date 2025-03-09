@@ -10,9 +10,9 @@ ProjectDataAnalysis-DBS/
 │   ├── e-commerce_dashboard.py
 │   ├── e-commerce_dataset
 │── data/
-│   ├── day.csv
-│   ├── hour.csv
-│   ├── Readme.txt
+│   ├── .csv
+│   ├── .csv
+│   ├── 
 │── e-commerce_analysis.ipynb
 │── README.md
 │── requirements.txt
