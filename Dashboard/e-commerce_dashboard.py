@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 
 # load dataset
-df = pd.read_csv("e-commerce_dataset.csv", parse_dates=["order_purchase_timestamp"])
+df = pd.read_csv("Dashboard/e-commerce_dataset.csv", parse_dates=["order_purchase_timestamp"])
 
 # Set page config
 st.set_page_config(page_title="E-Commerce Analysis Dashboard", layout="wide")
