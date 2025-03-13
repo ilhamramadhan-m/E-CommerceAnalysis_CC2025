@@ -1,1 +1,1 @@
-https://e-commerce-analytics-dashboard.streamlit.app/
+https://dbs-ecommerce-dashboard.streamlit.app/
