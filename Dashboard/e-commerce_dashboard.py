@@ -4,33 +4,25 @@ import pandas as pd
 import plotly.express as px
 
 # load dataset
-df = pd.read_csv("Dashboard/e-commerce_dataset.csv", parse_dates=["order_purchase_timestamp"])
+df = pd.read_csv("e-commerce_dataset.csv", parse_dates=["order_purchase_timestamp"])
 
-# Set page config
+# set konfigurasi halaman
 st.set_page_config(page_title="E-Commerce Analysis Dashboard", layout="wide")
 
-# membuat header pada sidebar
+# membuat sidebar
 st.sidebar.header("🔍 Filter")
 
 # membuat filter start date dan end date order
-min_date = df["order_purchase_timestamp"].min()
 max_date = df["order_purchase_timestamp"].max()
+min_date = max_date - pd.DateOffset(years=1)
 
 start_date = st.sidebar.date_input("Start Date", min_date, min_value=min_date, max_value=max_date)
 end_date = st.sidebar.date_input("End Date", max_date, min_value=min_date, max_value=max_date)
 
-# membuat filter slider harga berdasarkan payment_value
-min_price = int(df["payment_value"].min())
-max_price = int(df["payment_value"].max())
-
-price_range = st.sidebar.slider("Price Range", min_price, max_price, (min_price, max_price))
-
 # filter data berdasarkan input
 filtered = df[
     (df["order_purchase_timestamp"] >= pd.to_datetime(start_date)) &
-    (df["order_purchase_timestamp"] <= pd.to_datetime(end_date)) &
-    (df["payment_value"] >= price_range[0]) &
-    (df["payment_value"] <= price_range[1])
+    (df["order_purchase_timestamp"] <= pd.to_datetime(end_date))
 ]
 
 # menghitung summary keseluruhan
@@ -62,7 +54,7 @@ orders_change = ((current_orders - previous_orders) / previous_orders * 100) if 
 review_change = ((current_review - previous_review) / previous_review * 100) if previous_review != 0 else 0
 
 # memberikan title untuk dashboard
-st.header("📈 E-Commerce Analysis Dashboard")
+st.header("📈 E-Commerce Analysis Dashboard: Insights from the Past Year")
 
 # membuat layout 3 columns untuk summary
 col1, col2, col3 = st.columns(3)
@@ -80,83 +72,177 @@ with col3:
 # membuat layout untuk grafik
 col1, col2 = st.columns(2)
 col3, col4 = st.columns(2)
+col5, col6 = st.columns(2)
 
-# mengisi column 1 dengan line chart
+# mengkonversi datatype
+filtered["order_delivered_customer_date"] = pd.to_datetime(filtered["order_delivered_customer_date"], errors="coerce")
+filtered["order_estimated_delivery_date"] = pd.to_datetime(filtered["order_estimated_delivery_date"], errors="coerce")
+
+# mengkategorikan status pengiriman
+filtered["delivery_delay"] = (filtered["order_delivered_customer_date"] - filtered["order_estimated_delivery_date"]).dt.days
+
+filtered["delivery_status"] = filtered["delivery_delay"].apply(
+    lambda x: "Tepat Waktu" if x == 0 else ("Terlambat" if x > 0 else "Lebih Cepat")
+)
+
+# mengisi column 1 dengan bar chart
 with col1:
-    st.subheader("📦 Orders Per Month")
+    st.subheader("🚚 Estimasi Waktu Pengiriman")
+    
+    # menghitung jumlah pesanan berdasarkan kategori pengiriman
+    delivery_counts = filtered["delivery_status"].value_counts().reset_index()
+    delivery_counts.columns = ["delivery_status", "count"]
 
-    # menambahkan kolom bulan
-    filtered["month_name"] = filtered["order_purchase_timestamp"].dt.strftime("%B")
+    # memberikan warna pada bar chart
+    color_mapping = {
+    "Lebih Cepat": "#87CEFA",
+    "Terlambat": "#0074D9",
+    "Tepat Waktu": "#FFB6C1"
+    }
 
-    # menghitung jumlah order per bulan
-    monthly_orders = filtered.groupby("month_name")["order_id"].count().reset_index()
+    # membuat bar chart
+    fig_bar = px.bar(
+    delivery_counts, 
+    x="delivery_status", 
+    y="count", 
+    labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"},
+    color="delivery_status",
+    color_discrete_map=color_mapping
+    )
 
-    # memberikan nama bulan beserta mengurutkannya
-    month_order = ["January", "February", "March", "April", "May", "June", 
-                   "July", "August", "September", "October", "November", "December"]
-    monthly_orders["month_name"] = pd.Categorical(monthly_orders["month_name"], categories=month_order, ordered=True)
-    monthly_orders = monthly_orders.sort_values("month_name")
-
-    # membuat line chart
-    fig_line = px.line(monthly_orders, x="month_name", y="order_id", 
-                        labels={"month_name": "Month", "order_id": "Orders"}, 
-                        )
-
-    # mengatur supaya sumbu y dimulai dari 0
-    fig_line.update_yaxes(range=[0, monthly_orders["order_id"].max()])
-
+    # menghilangkan legend
+    fig_bar.update_layout(showlegend=False)
     # menampilkan chart
-    st.plotly_chart(fig_line, use_container_width=True)
+    st.plotly_chart(fig_bar, use_container_width=True)
 
-# mengisi column 2 dengan line
+# mengisi column 2 dengan pie chart
 with col2:
-    st.subheader("💰 Sales Per Month")
+    st.subheader("🔢 Persentase Kategori Pengiriman")
 
-    # Menambahkan kolom bulan
-    filtered["month_name"] = filtered["order_purchase_timestamp"].dt.strftime("%B")
+    # menghitung persentase tiap kategori
+    delivery_counts = filtered["delivery_status"].value_counts(normalize=True) * 100
 
-    # Menghitung total sales per bulan
-    monthly_sales = filtered.groupby("month_name")["payment_value"].sum().reset_index()
+    # memberikan warna pada bar chart
+    color_mapping = {
+    "Lebih Cepat": "#87CEFA",
+    "Terlambat": "#0074D9",
+    "Tepat Waktu": "#FFB6C1"
+    }
 
-    # Memberikan urutan bulan
-    month_order = ["January", "February", "March", "April", "May", "June", 
-                   "July", "August", "September", "October", "November", "December"]
-    monthly_sales["month_name"] = pd.Categorical(monthly_sales["month_name"], categories=month_order, ordered=True)
-    monthly_sales = monthly_sales.sort_values("month_name")
-
-    # Membuat line chart
-    fig_line = px.line(monthly_sales, x="month_name", y="payment_value", 
-                        labels={"month_name": "Month", "payment_value": "Sales"}
-                        )
-
-    # Mengatur supaya sumbu y dimulai dari 0
-    fig_line.update_yaxes(range=[0, monthly_sales["payment_value"].max()])
+    # membuat pie Chart
+    fig_pie = px.pie(
+    names=delivery_counts.index,
+    values=delivery_counts.values,
+    labels={"labels": "Kategori Pengiriman", "values": "Persentase"},
+    hole=0.4,
+    color=delivery_counts.index,
+    color_discrete_map=color_mapping
+    )
 
     # Menampilkan chart
-    st.plotly_chart(fig_line, use_container_width=True)
+    st.plotly_chart(fig_pie, use_container_width=True)
 
-# mengisi column 3 dengan pie
+# mengisi column 3 dengan box plot
 with col3:
-    st.subheader("💳 Payment Methods")
-    payment_counts = filtered["payment_type"].value_counts()
-    fig_pie_payment = px.pie(payment_counts, names=payment_counts.index, values=payment_counts.values,
-                            )
-    st.plotly_chart(fig_pie_payment, use_container_width=True)
+    st.subheader("📊 Distribusi Skor Review Berdasarkan Kategori Harga")
 
-# mengisi column 4 dengan pie
+    # membuat kategori harga produk dengan urutan tertentu
+    filtered["price_category"] = pd.qcut(
+        filtered["price"], q=4, labels=["Murah", "Sedang", "Mahal", "Sangat Mahal"]
+    )
+
+    # mengurutkan kategori produk
+    filtered["price_category"] = pd.Categorical(
+        filtered["price_category"], 
+        categories=["Murah", "Sedang", "Mahal", "Sangat Mahal"], 
+        ordered=True
+    )
+
+    # membuat boxplot
+    fig_box = px.box(
+        filtered,
+        x="price_category",
+        y="review_score",
+        labels={"price_category": "Kategori Harga", "review_score": "Skor Review"},
+        category_orders={"price_category": ["Murah", "Sedang", "Mahal", "Sangat Mahal"]},  # Urutan kategori
+        color="price_category",
+        color_discrete_sequence=px.colors.qualitative.Set2
+    )
+
+    # menghilangkan legend
+    fig_box.update_layout(showlegend=False)
+    # menampilkan chart
+    st.plotly_chart(fig_box, use_container_width=True)
+
+# mengisi column 4 dengan matriks korelasi
 with col4:
-    st.subheader("⭐ Review Scores")
-    review_counts = filtered["review_score"].value_counts()
-    fig_pie_review = px.pie(review_counts, names=review_counts.index, values=review_counts.values,
-                            )
-    st.plotly_chart(fig_pie_review, use_container_width=True)
+    st.subheader("🔍 Korelasi Harga & Skor Review")
 
-# mengisi column 5 dengan bar
-st.subheader("🏆 Top 10 Best-Selling Categories")
-top_categories = filtered["product_category_name_english"].value_counts().nlargest(10).reset_index()
-top_categories.columns = ["Category", "Orders"]
-bar_fig = px.bar(top_categories, x="Category", y="Orders",
-                 text_auto=True, template="plotly_white")
-st.plotly_chart(bar_fig, use_container_width=True)
+    # menghitung korelasi review dan harga
+    corr_matrix = filtered[["price", "review_score"]].corr()
+
+    # memmbuat heatmap berdasarkan matriks korelasi
+    fig_heatmap = px.imshow(
+        corr_matrix,
+        text_auto=True,
+        color_continuous_scale="RdBu",
+        labels=dict(color="Correlation")
+        )
+
+    # menampilkan heatmap
+    st.plotly_chart(fig_heatmap, use_container_width=True)
+
+# mengisi column 5 dengan bar chart
+with col5:
+    st.subheader("🛒 Top 5 Kota dengan Pelanggan Terbanyak")
+
+    # menghitung jumlah pelanggan per kota
+    top_cities_customers = df["customer_city"].value_counts().nlargest(5).reset_index()
+    top_cities_customers.columns = ["customer_city", "customer_count"]
+
+    # mwemberikan warna pada bar chart
+    custom_colors = ["#87CEFA", "#0074D9", "#FFB6C1", "#FFA07A", "#32CD32"]  # Tambahan warna
+
+    # membuat bar chart pelanggan
+    fig_customers = px.bar(
+        top_cities_customers,
+        x="customer_city",
+        y="customer_count",
+        labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"},
+        color="customer_city",
+        color_discrete_sequence=custom_colors
+    )
+
+    # menghilangkan legend
+    fig_customers.update_layout(showlegend=False)
+    # menampilkan chart
+    st.plotly_chart(fig_customers, use_container_width=True)
+
+
+with col6:
+    st.subheader("🏪 Top 5 Kota dengan Penjual Terbanyak")
+
+    # menghitung jumlah penjual unik per kota
+    top_cities_sellers = df["seller_city"].value_counts().nlargest(5).reset_index()
+    top_cities_sellers.columns = ["seller_city", "seller_count"]
+
+    # memberikan warna pada bar chart
+    custom_colors_sellers = ["#87CEFA", "#0074D9", "#FFB6C1", "#FFA07A", "#32CD32"]
+
+    # membuat Bar Chart penjual
+    fig_sellers = px.bar(
+        top_cities_sellers,
+        x="seller_city",
+        y="seller_count",
+        labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"},
+        color="seller_city",
+        color_discrete_sequence=custom_colors_sellers
+    )
+
+    # menghilangkan legend
+    fig_sellers.update_layout(showlegend=False)
+    # menampilkan chart
+    st.plotly_chart(fig_sellers, use_container_width=True)
+
 
 # streamlit run e-commerce_dashboard.py
