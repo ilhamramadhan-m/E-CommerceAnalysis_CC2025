@@ -93,21 +93,13 @@ with col1:
     delivery_counts = filtered["delivery_status"].value_counts().reset_index()
     delivery_counts.columns = ["delivery_status", "count"]
 
-    # memberikan warna pada bar chart
-    color_mapping = {
-    "Lebih Cepat": "#87CEFA",
-    "Terlambat": "#0074D9",
-    "Tepat Waktu": "#FFB6C1"
-    }
-
     # membuat bar chart
     fig_bar = px.bar(
     delivery_counts, 
     x="delivery_status", 
     y="count", 
     labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"},
-    color="delivery_status",
-    color_discrete_map=color_mapping
+    color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -122,11 +114,11 @@ with col2:
     # menghitung persentase tiap kategori
     delivery_counts = filtered["delivery_status"].value_counts(normalize=True) * 100
 
-    # memberikan warna pada bar chart
+    # memberikan warna pada pie chart
     color_mapping = {
-    "Lebih Cepat": "#87CEFA",
-    "Terlambat": "#0074D9",
-    "Tepat Waktu": "#FFB6C1"
+    "Lebih Cepat": "#003f5c",
+    "Terlambat": "#ffa600",
+    "Tepat Waktu": "#bc5090"
     }
 
     # membuat pie Chart
@@ -164,9 +156,7 @@ with col3:
         x="price_category",
         y="review_score",
         labels={"price_category": "Kategori Harga", "review_score": "Skor Review"},
-        category_orders={"price_category": ["Murah", "Sedang", "Mahal", "Sangat Mahal"]},  # Urutan kategori
-        color="price_category",
-        color_discrete_sequence=px.colors.qualitative.Set2
+        category_orders={"price_category": ["Murah", "Sedang", "Mahal", "Sangat Mahal"]}
     )
 
     # menghilangkan legend
@@ -200,17 +190,13 @@ with col5:
     top_cities_customers = df["customer_city"].value_counts().nlargest(5).reset_index()
     top_cities_customers.columns = ["customer_city", "customer_count"]
 
-    # mwemberikan warna pada bar chart
-    custom_colors = ["#87CEFA", "#0074D9", "#FFB6C1", "#FFA07A", "#32CD32"]  # Tambahan warna
-
     # membuat bar chart pelanggan
     fig_customers = px.bar(
         top_cities_customers,
         x="customer_city",
         y="customer_count",
         labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"},
-        color="customer_city",
-        color_discrete_sequence=custom_colors
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -226,17 +212,13 @@ with col6:
     top_cities_sellers = df["seller_city"].value_counts().nlargest(5).reset_index()
     top_cities_sellers.columns = ["seller_city", "seller_count"]
 
-    # memberikan warna pada bar chart
-    custom_colors_sellers = ["#87CEFA", "#0074D9", "#FFB6C1", "#FFA07A", "#32CD32"]
-
     # membuat Bar Chart penjual
     fig_sellers = px.bar(
         top_cities_sellers,
         x="seller_city",
         y="seller_count",
         labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"},
-        color="seller_city",
-        color_discrete_sequence=custom_colors_sellers
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
