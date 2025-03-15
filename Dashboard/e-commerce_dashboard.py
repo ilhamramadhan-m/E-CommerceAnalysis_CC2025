@@ -99,7 +99,7 @@ with col1:
         x="delivery_status", 
         y="count", 
         labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"},
-        color_discrete_sequence=["#ffa600"]
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -157,7 +157,7 @@ with col3:
         y="review_score",
         labels={"price_category": "Kategori Harga", "review_score": "Skor Review"},
         category_orders={"price_category": ["Murah", "Sedang", "Mahal", "Sangat Mahal"]},
-        color_discrete_sequence=["#ffa600"]
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -197,7 +197,7 @@ with col5:
         x="customer_city",
         y="customer_count",
         labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"},
-        color_discrete_sequence=["#ffa600"]
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -219,7 +219,7 @@ with col6:
         x="seller_city",
         y="seller_count",
         labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"},
-        color_discrete_sequence=["#ffa600"]
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
