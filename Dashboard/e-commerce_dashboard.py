@@ -95,10 +95,11 @@ with col1:
 
     # membuat bar chart
     fig_bar = px.bar(
-    delivery_counts, 
-    x="delivery_status", 
-    y="count", 
-    labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"}
+        delivery_counts, 
+        x="delivery_status", 
+        y="count", 
+        labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"},
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -115,19 +116,19 @@ with col2:
 
     # memberikan warna pada pie chart
     color_mapping = {
-    "Lebih Cepat": "#003f5c",
-    "Terlambat": "#ffa600",
-    "Tepat Waktu": "#bc5090"
+        "Lebih Cepat": "#003f5c",
+        "Terlambat": "#ffa600",
+        "Tepat Waktu": "#bc5090"
     }
 
     # membuat pie Chart
     fig_pie = px.pie(
-    names=delivery_counts.index,
-    values=delivery_counts.values,
-    labels={"labels": "Kategori Pengiriman", "values": "Persentase"},
-    hole=0.4,
-    color=delivery_counts.index,
-    color_discrete_map=color_mapping
+        names=delivery_counts.index,
+        values=delivery_counts.values,
+        labels={"labels": "Kategori Pengiriman", "values": "Persentase"},
+        hole=0.4,
+        color=delivery_counts.index,
+        color_discrete_map=color_mapping
     )
 
     # Menampilkan chart
@@ -155,7 +156,8 @@ with col3:
         x="price_category",
         y="review_score",
         labels={"price_category": "Kategori Harga", "review_score": "Skor Review"},
-        category_orders={"price_category": ["Murah", "Sedang", "Mahal", "Sangat Mahal"]}
+        category_orders={"price_category": ["Murah", "Sedang", "Mahal", "Sangat Mahal"]},
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -176,7 +178,7 @@ with col4:
         text_auto=True,
         color_continuous_scale="RdBu",
         labels=dict(color="Correlation")
-        )
+    )
 
     # menampilkan heatmap
     st.plotly_chart(fig_heatmap, use_container_width=True)
@@ -194,7 +196,8 @@ with col5:
         top_cities_customers,
         x="customer_city",
         y="customer_count",
-        labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"}
+        labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"},
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
@@ -215,7 +218,8 @@ with col6:
         top_cities_sellers,
         x="seller_city",
         y="seller_count",
-        labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"}
+        labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"},
+        color_discrete_sequence=["#003f5c"]
     )
 
     # menghilangkan legend
