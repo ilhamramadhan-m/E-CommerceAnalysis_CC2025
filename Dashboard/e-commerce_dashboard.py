@@ -98,8 +98,7 @@ with col1:
     delivery_counts, 
     x="delivery_status", 
     y="count", 
-    labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"},
-    color_discrete_sequence=["#003f5c"]
+    labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"}
     )
 
     # menghilangkan legend
@@ -195,8 +194,7 @@ with col5:
         top_cities_customers,
         x="customer_city",
         y="customer_count",
-        labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"},
-        color_discrete_sequence=["#003f5c"]
+        labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"}
     )
 
     # menghilangkan legend
@@ -217,8 +215,7 @@ with col6:
         top_cities_sellers,
         x="seller_city",
         y="seller_count",
-        labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"},
-        color_discrete_sequence=["#003f5c"]
+        labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"}
     )
 
     # menghilangkan legend
