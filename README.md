@@ -26,20 +26,29 @@ ProjectDataAnalysis-DBS/
 ```
 
 ## 🛠 Dashboard Steps
-- Install Python (If not already exist)
-- Install Libraries
+### 1️⃣ Install Python (If not already exist)
+### 2️⃣ Install Libraries
 ```
 pip install -r requirements.txt
 ```
-- Clone Repository and navigate to the project directory
+### 3️⃣ Clone Repository and navigate to the project directory
 ```
 git clone https://github.com/ilhamramadhan-m/ProjectDataAnalysis-DBS.git
 ```
-- Select Directory
+### 4️⃣ Set Up Virtual Environment
+```
+# Install pipenv if not installed
+pip install pipenv
+
+# Create and activate virtual environment
+pipenv install
+pipenv shell
+```
+### 5️⃣ Select Directory
 ```
 cd ProjectDataAnalysis-DBS/Dashboard
 ```
-- Run Dashboard
+### 6️⃣ Run Dashboard
 ```
 streamlit run e-commerce_dashboard.py
 ```
