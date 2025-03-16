@@ -19,10 +19,15 @@ min_date = max_date - pd.DateOffset(years=1)
 start_date = st.sidebar.date_input("Start Date", min_date, min_value=min_date, max_value=max_date)
 end_date = st.sidebar.date_input("End Date", max_date, min_value=min_date, max_value=max_date)
 
+# membuat filter berdasarkan tipe pembayaran 
+payment_types = df["payment_type"].unique().tolist()
+selected_payment = st.sidebar.selectbox("Choose Payment Method", ["All"] + payment_types)
+
 # filter data berdasarkan input
 filtered = df[
     (df["order_purchase_timestamp"] >= pd.to_datetime(start_date)) &
-    (df["order_purchase_timestamp"] <= pd.to_datetime(end_date))
+    (df["order_purchase_timestamp"] <= pd.to_datetime(end_date)) &
+    ((df["payment_type"] == selected_payment) if selected_payment != "All" else True)
 ]
 
 # menghitung summary keseluruhan
@@ -82,7 +87,7 @@ filtered["order_estimated_delivery_date"] = pd.to_datetime(filtered["order_estim
 filtered["delivery_delay"] = (filtered["order_delivered_customer_date"] - filtered["order_estimated_delivery_date"]).dt.days
 
 filtered["delivery_status"] = filtered["delivery_delay"].apply(
-    lambda x: "Tepat Waktu" if x == 0 else ("Terlambat" if x > 0 else "Lebih Cepat")
+    lambda x: " On-time delivery" if x == 0 else ("Late delivery" if x > 0 else "Delivered earlier than expected")
 )
 
 # mengisi column 1 dengan bar chart
@@ -109,7 +114,7 @@ with col1:
 
 # mengisi column 2 dengan pie chart
 with col2:
-    st.subheader("🔢 Persentase Kategori Pengiriman")
+    st.subheader("🔢 Percentage of Delivery Categories")
 
     # menghitung persentase tiap kategori
     delivery_counts = filtered["delivery_status"].value_counts(normalize=True) * 100
@@ -136,17 +141,17 @@ with col2:
 
 # mengisi column 3 dengan box plot
 with col3:
-    st.subheader("📊 Distribusi Skor Review Berdasarkan Kategori Harga")
+    st.subheader("📊 Distribution of Review Score by Price Category")
 
     # membuat kategori harga produk dengan urutan tertentu
     filtered["price_category"] = pd.qcut(
-        filtered["price"], q=4, labels=["Murah", "Sedang", "Mahal", "Sangat Mahal"]
+        filtered["price"], q=4, labels=["Affordable", "Mid-range", "Expensive", "Very Expensive"]
     )
 
     # mengurutkan kategori produk
     filtered["price_category"] = pd.Categorical(
         filtered["price_category"], 
-        categories=["Murah", "Sedang", "Mahal", "Sangat Mahal"], 
+        categories=["Affordable", "Mid-range", "Expensive", "Very Expensive"], 
         ordered=True
     )
 
@@ -156,7 +161,7 @@ with col3:
         x="price_category",
         y="review_score",
         labels={"price_category": "Kategori Harga", "review_score": "Skor Review"},
-        category_orders={"price_category": ["Murah", "Sedang", "Mahal", "Sangat Mahal"]},
+        category_orders={"price_category": ["Affordable", "Mid-range", "Expensive", "Very Expensive"]},
         color_discrete_sequence=["#7a5195"]
     )
 
@@ -167,7 +172,7 @@ with col3:
 
 # mengisi column 4 dengan matriks korelasi
 with col4:
-    st.subheader("🔍 Korelasi Harga & Skor Review")
+    st.subheader("🔍 Price Correlation & Review Score")
 
     # menghitung korelasi review dan harga
     corr_matrix = filtered[["price", "review_score"]].corr()
@@ -185,7 +190,7 @@ with col4:
 
 # mengisi column 5 dengan bar chart
 with col5:
-    st.subheader("🛒 Top 5 Kota dengan Pelanggan Terbanyak")
+    st.subheader("🛒 Top 5 Cities with the Most Customers")
 
     # menghitung jumlah pelanggan per kota
     top_cities_customers = df["customer_city"].value_counts().nlargest(5).reset_index()
@@ -207,7 +212,7 @@ with col5:
 
 
 with col6:
-    st.subheader("🏪 Top 5 Kota dengan Penjual Terbanyak")
+    st.subheader("🏪 Top 5 Cities with the Most Sellers")
 
     # menghitung jumlah penjual unik per kota
     top_cities_sellers = df["seller_city"].value_counts().nlargest(5).reset_index()
