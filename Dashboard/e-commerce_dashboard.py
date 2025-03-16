@@ -92,7 +92,7 @@ filtered["delivery_status"] = filtered["delivery_delay"].apply(
 
 # mengisi column 1 dengan bar chart
 with col1:
-    st.subheader("🚚 Estimasi Waktu Pengiriman")
+    st.subheader("🚚 Estimated Delivery Time")
     
     # menghitung jumlah pesanan berdasarkan kategori pengiriman
     delivery_counts = filtered["delivery_status"].value_counts().reset_index()
