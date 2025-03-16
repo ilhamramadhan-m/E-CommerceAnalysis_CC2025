@@ -87,7 +87,7 @@ filtered["order_estimated_delivery_date"] = pd.to_datetime(filtered["order_estim
 filtered["delivery_delay"] = (filtered["order_delivered_customer_date"] - filtered["order_estimated_delivery_date"]).dt.days
 
 filtered["delivery_status"] = filtered["delivery_delay"].apply(
-    lambda x: " On-time delivery" if x == 0 else ("Late delivery" if x > 0 else "Delivered earlier than expected")
+    lambda x: "On-time delivery" if x == 0 else ("Late delivery" if x > 0 else "Delivered earlier than expected")
 )
 
 # mengisi column 1 dengan bar chart
@@ -103,7 +103,7 @@ with col1:
         delivery_counts, 
         x="delivery_status", 
         y="count", 
-        labels={"delivery_status": "Status Pengiriman", "count": "Jumlah Pesanan"},
+        labels={"delivery_status": "Delivery Status", "count": "Orders"},
         color_discrete_sequence=["#7a5195"]
     )
 
@@ -121,9 +121,9 @@ with col2:
 
     # memberikan warna pada pie chart
     color_mapping = {
-        "Lebih Cepat": "#003f5c",
-        "Terlambat": "#ffa600",
-        "Tepat Waktu": "#bc5090"
+        "Delivered earlier than expected": "#003f5c",
+        "Late delivery": "#ffa600",
+        "On-time delivery": "#bc5090"
     }
 
     # membuat pie Chart
@@ -160,7 +160,7 @@ with col3:
         filtered,
         x="price_category",
         y="review_score",
-        labels={"price_category": "Kategori Harga", "review_score": "Skor Review"},
+        labels={"price_category": "Price Category", "review_score": "Review Score"},
         category_orders={"price_category": ["Affordable", "Mid-range", "Expensive", "Very Expensive"]},
         color_discrete_sequence=["#7a5195"]
     )
@@ -201,7 +201,7 @@ with col5:
         top_cities_customers,
         x="customer_city",
         y="customer_count",
-        labels={"customer_city": "Kota", "customer_count": "Jumlah Pelanggan"},
+        labels={"customer_city": "City", "customer_count": "Customers"},
         color_discrete_sequence=["#7a5195"]
     )
 
@@ -223,7 +223,7 @@ with col6:
         top_cities_sellers,
         x="seller_city",
         y="seller_count",
-        labels={"seller_city": "Kota", "seller_count": "Jumlah Penjual"},
+        labels={"seller_city": "City", "seller_count": "Sellers"},
         color_discrete_sequence=["#7a5195"]
     )
 
