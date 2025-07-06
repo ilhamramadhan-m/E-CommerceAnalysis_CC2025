@@ -1,88 +1,95 @@
+# 🛒 Analisis Interaktif Transaksi E-Commerce
 
-# 🛒 Interactive Analytics of E-Commerce Transactions
+## 📌 Gambaran Umum Proyek
 
-## 📌 Project Overview
-This project presents an interactive data analysis of a public e-commerce dataset from Brazil, integrating customer, order, product, and review data. The goal is to uncover insights on customer behavior, payment trends, delivery performance, seller distribution, and the relationship between pricing and satisfaction — all through a dynamic dashboard built using **Streamlit**.
+Proyek ini menyajikan analisis data interaktif dari dataset publik e-commerce asal Brasil, yang mengintegrasikan informasi pelanggan, pesanan, produk, ulasan, hingga pembayaran. Tujuan utama proyek ini adalah menggali wawasan mengenai perilaku pelanggan, tren pembayaran, performa pengiriman, sebaran penjual, serta hubungan antara harga dan tingkat kepuasan — semua dikemas dalam **dashboard dinamis berbasis Streamlit**.
 
-## 🗂️ Dataset Overview
-Data used in this project comes from a multi-table e-commerce dataset, which includes:
-- Customer information
-- Product metadata (category, price)
-- Order timelines and delivery estimates
-- Review scores and payment methods
-- Seller details and location
+## 🗂️ Ringkasan Dataset
 
-🔗 Source: [Brazilian E-Commerce Public Dataset](https://www.kaggle.com/olistbr/brazilian-ecommerce)
+Data yang digunakan berasal dari dataset e-commerce multi-tabel, yang mencakup:
 
-## 📊 Key Features & Dashboard Insights
-The dashboard allows users to:
-- Filter by **purchase date range** and **payment type**
-- View **monthly comparisons** of total sales, orders, and review scores
-- Analyze **delivery efficiency** (on-time, early, or late)
-- Understand **price vs review correlations**
-- Explore **review score distributions by product price category**
-- Identify **top cities by customer and seller counts**
+* Informasi pelanggan
+* Metadata produk (kategori, harga)
+* Linimasa pesanan dan estimasi pengiriman
+* Skor ulasan dan metode pembayaran
+* Detail dan lokasi penjual
 
-## 📁 Directory Structure
+🔗 Sumber: [Brazilian E-Commerce Public Dataset](https://www.kaggle.com/olistbr/brazilian-ecommerce)
+
+## 📊 Fitur Utama & Insight Dashboard
+
+Dashboard memungkinkan pengguna untuk:
+
+* Menyaring data berdasarkan **rentang tanggal pembelian** dan **metode pembayaran**
+* Melihat perbandingan bulanan atas **total penjualan, jumlah pesanan, dan skor ulasan**
+* Menganalisis **efisiensi pengiriman** (tepat waktu, lebih cepat, atau terlambat)
+* Mengetahui **korelasi antara harga dan skor ulasan**
+* Mengeksplorasi **distribusi skor ulasan berdasarkan kategori harga produk**
+* Mengidentifikasi **kota dengan jumlah pelanggan dan penjual terbanyak**
+
+## 📁 Struktur Direktori
+
 ```
-
 ProjectDataAnalysis-DBS/
 │── Dashboard/
-│   ├── e-commerce\_dashboard.py
-│   ├── e-commerce\_dataset.csv 
+│   ├── e-commerce_dashboard.py
+│   ├── e-commerce_dataset.csv 
 │
 │── Data/ 
-│   ├── customer\_dataset.csv
-│   ├── geolocation\_dataset.7z
-│   ├── order\_items\_dataset.csv
-│   ├── order\_payments\_dataset.csv
-│   ├── order\_reviews\_dataset.csv
-│   ├── orders\_dataset.csv
-│   ├── product\_category\_name\_translation.csv
-│   ├── products\_dataset.csv
-│   ├── sellers\_dataset.csv
+│   ├── customer_dataset.csv
+│   ├── geolocation_dataset.7z
+│   ├── order_items_dataset.csv
+│   ├── order_payments_dataset.csv
+│   ├── order_reviews_dataset.csv
+│   ├── orders_dataset.csv
+│   ├── product_category_name_translation.csv
+│   ├── products_dataset.csv
+│   ├── sellers_dataset.csv
 │
-│── e-commerce\_analysis.ipynb 
+│── e-commerce_analysis.ipynb 
 │── requirements.txt      
 │── url.txt 
 │── README.md
+```
 
-````
+## 🚀 Cara Menjalankan Dashboard
 
-## 🚀 How to Run the Dashboard
-Follow the steps below to set up and run the Streamlit dashboard locally.
+Ikuti langkah-langkah berikut untuk menyiapkan dan menjalankan dashboard Streamlit secara lokal:
 
-### 1️⃣ Install Python (if not already installed)
+### 1️⃣ Instalasi Python
 
-### 2️⃣ Install Required Libraries
+Pastikan Python telah terinstal di perangkat Anda.
+
+### 2️⃣ Instalasi Library yang Dibutuhkan
+
 ```bash
 pip install -r requirements.txt
-````
+```
 
-### 3️⃣ Clone the Repository
+### 3️⃣ Clone Repository dari GitHub
 
 ```bash
 git clone https://github.com/ilhamramadhan-m/ProjectDataAnalysis-DBS.git
 ```
 
-### 4️⃣ Create & Activate Virtual Environment
+### 4️⃣ Buat dan Aktifkan Virtual Environment
 
 ```bash
-# Install pipenv (if not installed)
+# Instal pipenv (jika belum ada)
 pip install pipenv
 
-# Create and activate environment
+# Buat dan aktifkan environment
 pipenv install
 pipenv shell
 ```
 
-### 5️⃣ Navigate to the Dashboard Folder
+### 5️⃣ Masuk ke Direktori Dashboard
 
 ```bash
 cd ProjectDataAnalysis-DBS/Dashboard
 ```
 
-### 6️⃣ Launch the Dashboard
+### 6️⃣ Jalankan Dashboard Streamlit
 
 ```bash
 streamlit run e-commerce_dashboard.py
